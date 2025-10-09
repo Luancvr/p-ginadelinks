@@ -43,6 +43,10 @@ body {
     z-index: 1;
 }
 
+a {
+    text-decoration: none;
+}
+
 /* Header */
 .header {
     text-align: center;
