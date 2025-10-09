@@ -23,7 +23,9 @@ function initializePage() {
 // Configurar event listeners
 function setupEventListeners() {
     const linkBlocks = document.querySelectorAll('.link-block');
+    const imageBlocks = document.querySelectorAll('.image-link-block');
     
+    // Event listeners para blocos tradicionais
     linkBlocks.forEach(block => {
         // Click handler para navegação
         block.addEventListener('click', handleLinkClick);
@@ -35,6 +37,20 @@ function setupEventListeners() {
         // Suporte para toque em dispositivos móveis
         block.addEventListener('touchstart', handleTouchStart);
         block.addEventListener('touchend', handleTouchEnd);
+    });
+    
+    // Event listeners para blocos de imagem
+    imageBlocks.forEach(block => {
+        // Click handler para navegação
+        block.addEventListener('click', handleImageLinkClick);
+        
+        // Efeitos de hover para blocos de imagem
+        block.addEventListener('mouseenter', handleImageMouseEnter);
+        block.addEventListener('mouseleave', handleImageMouseLeave);
+        
+        // Suporte para toque em dispositivos móveis
+        block.addEventListener('touchstart', handleImageTouchStart);
+        block.addEventListener('touchend', handleImageTouchEnd);
     });
     
     // Adicionar funcionalidade de edição
@@ -103,6 +119,109 @@ function handleTouchEnd(event) {
     }, 150);
 }
 
+// Handlers específicos para blocos de imagem
+function handleImageLinkClick(event) {
+    const block = event.currentTarget;
+    const url = block.dataset.link;
+    
+    if (!url || url === '') {
+        // Se não há URL, entrar em modo de edição
+        if (!block.classList.contains('editing')) {
+            enterImageEditMode(block);
+        }
+        return;
+    }
+    
+    // Adicionar efeito de loading
+    block.classList.add('loading');
+    
+    // Simular delay de carregamento para melhor UX
+    setTimeout(() => {
+        block.classList.remove('loading');
+        window.open(url, '_blank');
+    }, 400);
+}
+
+function handleImageMouseEnter(event) {
+    const block = event.currentTarget;
+    const img = block.querySelector('.image-link-img');
+    
+    // Efeito de zoom na imagem
+    if (img) {
+        img.style.transform = 'scale(1.1)';
+        img.style.filter = 'brightness(1)';
+    }
+    
+    // Efeito de elevação
+    block.style.transform = 'translateY(-10px) scale(1.02)';
+    block.style.boxShadow = '0 25px 50px rgba(0, 0, 0, 0.3)';
+}
+
+function handleImageMouseLeave(event) {
+    const block = event.currentTarget;
+    const img = block.querySelector('.image-link-img');
+    
+    // Remover efeitos
+    if (img) {
+        img.style.transform = '';
+        img.style.filter = '';
+    }
+    
+    block.style.transform = '';
+    block.style.boxShadow = '';
+}
+
+function handleImageTouchStart(event) {
+    const block = event.currentTarget;
+    block.style.transform = 'translateY(-5px) scale(1.01)';
+}
+
+function handleImageTouchEnd(event) {
+    const block = event.currentTarget;
+    setTimeout(() => {
+        block.style.transform = '';
+    }, 200);
+}
+
+function enterImageEditMode(block) {
+    // Implementar modo de edição específico para blocos de imagem
+    const overlay = document.createElement('div');
+    overlay.className = 'image-edit-overlay';
+    overlay.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        border-radius: 16px;
+        z-index: 10;
+    `;
+    
+    // Botões de edição para imagem
+    const editImageBtn = createEditButton('🖼️', () => editImageBlockImage(block));
+    const editLinkBtn = createEditButton('🔗', () => editImageBlockLink(block));
+    const editTextBtn = createEditButton('📝', () => editImageBlockText(block));
+    
+    overlay.appendChild(editImageBtn);
+    overlay.appendChild(editLinkBtn);
+    overlay.appendChild(editTextBtn);
+    
+    block.style.position = 'relative';
+    block.appendChild(overlay);
+    
+    // Remover overlay após 5 segundos
+    setTimeout(() => {
+        if (overlay.parentNode) {
+            overlay.remove();
+        }
+    }, 5000);
+}
+
 // Efeito parallax suave
 function handleParallax() {
     const scrolled = window.pageYOffset;
@@ -128,8 +247,19 @@ function setupIntersectionObserver() {
         rootMargin: '0px 0px -50px 0px'
     });
     
+    // Observar blocos tradicionais
     document.querySelectorAll('.link-block').forEach(block => {
         observer.observe(block);
+    });
+    
+    // Observar blocos de imagem
+    document.querySelectorAll('.image-link-block').forEach(block => {
+        observer.observe(block);
+    });
+    
+    // Observar seção de imagens
+    document.querySelectorAll('.image-links-section').forEach(section => {
+        observer.observe(section);
     });
 }
 
@@ -263,15 +393,23 @@ let editMode = false;
 function toggleEditMode() {
     editMode = !editMode;
     const linkBlocks = document.querySelectorAll('.link-block');
+    const imageBlocks = document.querySelectorAll('.image-link-block');
     const editButton = document.querySelector('.edit-button');
     
     if (editMode) {
         editButton.innerHTML = '💾';
         editButton.style.background = 'rgba(34, 197, 94, 0.3)';
         
+        // Adicionar controles para blocos tradicionais
         linkBlocks.forEach(block => {
             block.classList.add('edit-mode');
             addEditControls(block);
+        });
+        
+        // Adicionar controles para blocos de imagem
+        imageBlocks.forEach(block => {
+            block.classList.add('edit-mode');
+            addImageEditControls(block);
         });
         
         showEditInstructions();
@@ -279,9 +417,16 @@ function toggleEditMode() {
         editButton.innerHTML = '✏️';
         editButton.style.background = 'rgba(255, 255, 255, 0.2)';
         
+        // Remover controles dos blocos tradicionais
         linkBlocks.forEach(block => {
             block.classList.remove('edit-mode');
             removeEditControls(block);
+        });
+        
+        // Remover controles dos blocos de imagem
+        imageBlocks.forEach(block => {
+            block.classList.remove('edit-mode');
+            removeImageEditControls(block);
         });
         
         hideEditInstructions();
@@ -577,3 +722,203 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+
+// Funções específicas para blocos de imagem
+function addImageEditControls(block) {
+    // Adicionar overlay de edição para imagem
+    const overlay = document.createElement('div');
+    overlay.className = 'edit-overlay image-edit-overlay';
+    overlay.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        border-radius: 16px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 5;
+    `;
+    
+    // Botões de edição específicos para imagem
+    const editImageBtn = createEditButton('🖼️', () => editImageBlockImage(block));
+    const editLinkBtn = createEditButton('🔗', () => editImageBlockLink(block));
+    const editTextBtn = createEditButton('📝', () => editImageBlockText(block));
+    
+    overlay.appendChild(editImageBtn);
+    overlay.appendChild(editLinkBtn);
+    overlay.appendChild(editTextBtn);
+    
+    block.style.position = 'relative';
+    block.appendChild(overlay);
+    
+    // Mostrar overlay no hover
+    block.addEventListener('mouseenter', () => {
+        if (editMode) overlay.style.opacity = '1';
+    });
+    block.addEventListener('mouseleave', () => {
+        overlay.style.opacity = '0';
+    });
+}
+
+function removeImageEditControls(block) {
+    const overlay = block.querySelector('.image-edit-overlay');
+    if (overlay) {
+        overlay.remove();
+    }
+}
+
+function editImageBlockImage(block) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    
+    input.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = block.querySelector('.image-link-img');
+                img.src = e.target.result;
+                
+                // Feedback visual
+                block.style.animation = 'pulse 0.5s ease';
+                setTimeout(() => {
+                    block.style.animation = '';
+                }, 500);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    input.click();
+}
+
+function editImageBlockLink(block) {
+    const currentLink = block.dataset.link || '';
+    const newLink = prompt('Digite a URL do link:', currentLink);
+    
+    if (newLink !== null) {
+        block.dataset.link = newLink;
+        
+        // Feedback visual
+        const overlay = block.querySelector('.image-overlay');
+        if (overlay) {
+            overlay.style.animation = 'pulse 0.5s ease';
+            setTimeout(() => {
+                overlay.style.animation = '';
+            }, 500);
+        }
+        
+        showNotification('Link atualizado com sucesso!', 'success');
+    }
+}
+
+function editImageBlockText(block) {
+    const title = block.querySelector('.image-title');
+    const subtitle = block.querySelector('.image-subtitle');
+    
+    const newTitle = prompt('Digite o título:', title.textContent);
+    if (newTitle !== null) {
+        title.textContent = newTitle;
+    }
+    
+    const newSubtitle = prompt('Digite o subtítulo:', subtitle.textContent);
+    if (newSubtitle !== null) {
+        subtitle.textContent = newSubtitle;
+    }
+    
+    // Feedback visual
+    const overlay = block.querySelector('.image-overlay-content');
+    if (overlay) {
+        overlay.style.animation = 'pulse 0.5s ease';
+        setTimeout(() => {
+            overlay.style.animation = '';
+        }, 500);
+    }
+}
+
+// Atualizar função de salvamento para incluir blocos de imagem
+function savePageConfiguration() {
+    const config = {
+        title: document.getElementById('main-title').textContent,
+        subtitle: document.getElementById('subtitle').textContent,
+        profileImage: document.getElementById('profile-img').src,
+        links: [],
+        imageLinks: []
+    };
+    
+    // Salvar blocos tradicionais
+    document.querySelectorAll('.link-block').forEach(block => {
+        const linkData = {
+            title: block.querySelector('.link-title').textContent,
+            description: block.querySelector('.link-description').textContent,
+            url: block.dataset.link || '',
+            image: block.querySelector('.icon-img').src
+        };
+        config.links.push(linkData);
+    });
+    
+    // Salvar blocos de imagem
+    document.querySelectorAll('.image-link-block').forEach(block => {
+        const imageLinkData = {
+            title: block.querySelector('.image-title').textContent,
+            subtitle: block.querySelector('.image-subtitle').textContent,
+            url: block.dataset.link || '',
+            image: block.querySelector('.image-link-img').src
+        };
+        config.imageLinks.push(imageLinkData);
+    });
+    
+    // Salvar no localStorage
+    localStorage.setItem('linksPageConfig', JSON.stringify(config));
+    
+    // Feedback visual
+    showNotification('Configuração salva com sucesso!', 'success');
+}
+
+// Atualizar função de carregamento para incluir blocos de imagem
+function loadPageConfiguration() {
+    const saved = localStorage.getItem('linksPageConfig');
+    if (saved) {
+        const config = JSON.parse(saved);
+        
+        document.getElementById('main-title').textContent = config.title;
+        document.getElementById('subtitle').textContent = config.subtitle;
+        document.getElementById('profile-img').src = config.profileImage;
+        
+        // Carregar blocos tradicionais
+        const linkBlocks = document.querySelectorAll('.link-block');
+        if (config.links) {
+            config.links.forEach((linkData, index) => {
+                if (linkBlocks[index]) {
+                    const block = linkBlocks[index];
+                    block.querySelector('.link-title').textContent = linkData.title;
+                    block.querySelector('.link-description').textContent = linkData.description;
+                    block.dataset.link = linkData.url;
+                    block.querySelector('.icon-img').src = linkData.image;
+                }
+            });
+        }
+        
+        // Carregar blocos de imagem
+        const imageBlocks = document.querySelectorAll('.image-link-block');
+        if (config.imageLinks) {
+            config.imageLinks.forEach((imageLinkData, index) => {
+                if (imageBlocks[index]) {
+                    const block = imageBlocks[index];
+                    block.querySelector('.image-title').textContent = imageLinkData.title;
+                    block.querySelector('.image-subtitle').textContent = imageLinkData.subtitle;
+                    block.dataset.link = imageLinkData.url;
+                    block.querySelector('.image-link-img').src = imageLinkData.image;
+                }
+            });
+        }
+    }
+}
