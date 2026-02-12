@@ -27,6 +27,11 @@ body {
     z-index: 1;
 }
 
+a {
+    text-decoration: none; /* Remove a linha */
+    color: inherit;        /* Define a cor como a do texto normal */
+}
+
 @keyframes backgroundFloat {
     0%, 100% { transform: translateY(0px) rotate(0deg); }
     33% { transform: translateY(-20px) rotate(1deg); }
@@ -86,15 +91,16 @@ body {
 @media (max-width: 768px) {
     .profile-name {
         font-size: 2.0rem;
-        margin-bottom: 20px;/* Tamanho da fonte reduzido para telas menores */
-    }
+        margin-bottom: 50px;
+        margin-top: 30px;
 }
 
 /* Você pode adicionar mais Media Queries para diferentes tamanhos de tela, se necessário */
 @media (max-width: 350px) {
     .profile-name {
         font-size: 1.6rem; /* Tamanho ainda menor para telas muito pequenas */
-        margin-bottom: 20px;
+        margin-bottom: 40px;
+        margin-top: 30px;
     }
 }
 
