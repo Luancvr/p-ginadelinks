@@ -91,8 +91,8 @@ a {
 @media (max-width: 768px) {
     .profile-name {
         font-size: 2.0rem;
-        margin-bottom: 50px;
-        margin-top: 30px;
+        margin-bottom: 40px;
+        margin-top: 50px;
 }
 
 /* Você pode adicionar mais Media Queries para diferentes tamanhos de tela, se necessário */
