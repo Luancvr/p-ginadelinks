@@ -355,7 +355,7 @@ a {
         margin-top: 50px;
     }
 
-.profile-subtitle {
+    .profile-subtitle {
         font-size: 10px; /* Tamanho ainda menor para telas muito pequenas */
     }
     
@@ -601,7 +601,7 @@ a {
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 350px) {
     .image-links-grid {
         gap: 0.75rem;
     }
