@@ -501,6 +501,11 @@ a {
   .profile-subtitle {
         font-size: 12px; /* Tamanho da fonte reduzido para telas menores */
     }
+
+    .profile-image {
+        width: 100px;
+        height: 100px;
+    }
         
     .container {
         padding: 1.5rem 1rem;
