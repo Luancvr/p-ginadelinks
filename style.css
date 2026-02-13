@@ -294,89 +294,6 @@ a {
     to { opacity: 1; }
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-
-    .profile-name {
-        font-size: 2.0rem;
-        margin-bottom: 40px;
-        margin-top: 50px;
-
-  .profile-subtitle {
-        font-size: 12px; /* Tamanho da fonte reduzido para telas menores */
-    }
-        
-    .container {
-        padding: 1.5rem 1rem;
-    }
-    
-    .main-title {
-        font-size: 2rem;
-    }
-    
-    .subtitle {
-        font-size: 1rem;
-    }
-    
-    .subtitle2 {
-        font-size: 1rem;
-    }
-    
-    .link-block {
-        padding: 1.25rem;
-    }
-    
-    .link-content {
-        gap: 0.75rem;
-    }
-    
-    .link-icon {
-        width: 50px;
-        height: 50px;
-    }
-    
-    .link-title {
-        font-size: 1.1rem;
-    }
-    
-    .link-description {
-        font-size: 0.85rem;
-    }
-}
-
-@media (max-width: 350px) {
-    .container {
-        padding: 1rem 0.75rem;
-    }
-
-   .profile-name {
-        font-size: 1.6rem; /* Tamanho ainda menor para telas muito pequenas */
-        margin-bottom: 30px;
-        margin-top: 50px;
-    }
-
-    .profile-subtitle {
-        font-size: 10px; /* Tamanho ainda menor para telas muito pequenas */
-    }
-    
-    .profile-image {
-        width: 100px;
-        height: 100px;
-    }
-    
-    .main-title {
-        font-size: 1.75rem;
-    }
-    
-    .link-block {
-        padding: 1rem;
-    }
-    
-    .link-icon {
-        width: 45px;
-        height: 45px;
-    }
-}
 
 /* Estados de loading e interação */
 .link-block.loading {
@@ -571,6 +488,90 @@ a {
     border-radius: 50%;
     animation: spin 1s linear infinite;
     z-index: 10;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+
+    .profile-name {
+        font-size: 2.0rem;
+        margin-bottom: 40px;
+        margin-top: 50px;
+
+  .profile-subtitle {
+        font-size: 12px; /* Tamanho da fonte reduzido para telas menores */
+    }
+        
+    .container {
+        padding: 1.5rem 1rem;
+    }
+    
+    .main-title {
+        font-size: 2rem;
+    }
+    
+    .subtitle {
+        font-size: 1rem;
+    }
+    
+    .subtitle2 {
+        font-size: 1rem;
+    }
+    
+    .link-block {
+        padding: 1.25rem;
+    }
+    
+    .link-content {
+        gap: 0.75rem;
+    }
+    
+    .link-icon {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .link-title {
+        font-size: 1.1rem;
+    }
+    
+    .link-description {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 350px) {
+    .container {
+        padding: 1rem 0.75rem;
+    }
+
+   .profile-name {
+        font-size: 1.6rem; /* Tamanho ainda menor para telas muito pequenas */
+        margin-bottom: 30px;
+        margin-top: 50px;
+    }
+
+    .profile-subtitle {
+        font-size: 10px; /* Tamanho ainda menor para telas muito pequenas */
+    }
+    
+    .profile-image {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .main-title {
+        font-size: 1.75rem;
+    }
+    
+    .link-block {
+        padding: 1rem;
+    }
+    
+    .link-icon {
+        width: 45px;
+        height: 45px;
+    }
 }
 
 /* Responsividade para blocos de imagem */
