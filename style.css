@@ -21,7 +21,7 @@ body {
     left: 0;
     width: 100%;
     height: 130%;
-    background: url('https://lh3.googleusercontent.com/pw/AP1GczN6MZCue0JZ8LXCs8BF3scr7TX4JIWMmflFhw6Ml9uKfbPCzCmuCfEM73kEgaGVqABXlgFtoFgUwVZWm3opkms1WD20dU5UN-mNIYB9C6bqHKa-XL37KAL9qiK0jpGDUFh1OgfZw-hV84OIrKFpevN5Sw=w792-h705-s-no-gm?authuser=0') center repeat-y;
+    background: url('') center repeat-y;
     animation: backgroundFloat 15s ease-in-out infinite;
     opacity: 0.85;
     z-index: 1;
